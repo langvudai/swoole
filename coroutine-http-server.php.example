@@ -1,0 +1,52 @@
+#!/usr/bin/env php
+<?php
+
+use Swoole\Coroutine\Http\Server;
+
+// Create main coroutine context
+Co\run(function()
+{
+    // Create a new server on this host and port, turn off SSL
+    $server = new Server('127.0.0.1', 9502, false);
+
+    // Handle the root path
+    $server->handle('/', function(Swoole\Http\Request $request, Swoole\Http\Response $response)
+    {
+        $response->end("<h1>Index</h1>");
+    });
+
+    // Handle another URL path...
+    $server->handle('/test', function(Swoole\Http\Request $request, Swoole\Http\Response $response)
+    {
+        $response->end("<h1>Test</h1>");
+    });
+
+    $server->handle('/stop', function(Swoole\Http\Request $request, Swoole\Http\Response $response) use ($server)
+    {
+        $response->end("<h1>Stop</h1>");
+        $server->shutdown();
+    });
+
+    $server->start();
+});
+
+// if custom url routing
+Co\run(function()
+{
+    // Create a new server on this host and port, turn off SSL
+    $server = new Server('127.0.0.1', 9502, false);
+
+    // Handle all requests via the root path
+    $server->handle('/', function(Swoole\Http\Request $request, Swoole\Http\Response $response)
+    {
+        $requestRoute = $request->server['request_uri'];
+
+        // Example of custom router handling the request path and giving back content
+        /** @var $router */
+        $content = $router->handle($requestRoute, $request, $response);
+
+        $response->end($content);
+    });
+
+    $server->start();
+});
