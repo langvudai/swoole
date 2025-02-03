@@ -1,3 +1,24 @@
 {
-    "name": "langvudai/swoole"    
+    "name": "langvudai/swoole",
+    "require": {
+        "nesbot/carbon": "2.62.1",
+        "nikic/fast-route": "1.3",
+        "symfony/console": "6.0",
+        "symfony/http-foundation": "6.0",
+        "symfony/var-dumper": "6.0",
+        "vlucas/phpdotenv": "5.4.1",
+        "ext-pdo": "*"
+    },
+    "require-dev": {
+        "swoole/ide-helper": "^4.8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/",
+            "SwooleBase\\Foundation\\": "src/foundation"
+        },
+        "files": [
+            "src/foundation/helpers.php"
+        ]
+    }
 }
